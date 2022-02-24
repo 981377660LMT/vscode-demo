@@ -1,10 +1,16 @@
 import * as vscode from 'vscode'
-import { BinaryEditor } from './BinaryEditor'
-import { TextEditor } from './TextEditor'
+import { DepNodeProvider } from './DepNodeProvider'
 
 export function activate(context: vscode.ExtensionContext): void {
-  // 纯文本编辑
-  // context.subscriptions.push(TextEditor.register(context))
-  // 二进制文件编辑
-  context.subscriptions.push(BinaryEditor.register(context))
+  const rootPath =
+    vscode.workspace.workspaceFolders && vscode.workspace.workspaceFolders.length > 0
+      ? vscode.workspace.workspaceFolders[0].uri.fsPath
+      : undefined
+
+  const treeDataProvider = new DepNodeProvider(rootPath)
+  vscode.window.registerTreeDataProvider('tree-view', treeDataProvider)
+
+  vscode.commands.registerCommand('tree-view.refresh', () => {
+    treeDataProvider.refresh()
+  })
 }

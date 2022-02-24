@@ -1,11 +1,43 @@
-CustomTextEditorProvider => 一般用于处理文本文件(例如 json)
+<!-- 这个示例利用树视图来展示当前文件夹中所有的Node.js依赖 -->
 
-CustomReadonlyEditorProvider<D> => 一般用于处理二进制文件(例如 json)，但是只需要显示
-CustomEditorProvider<D> => 一般用于处理二进制文件，需要实现 undo/redo/save/revert 等方法
+explorer 栏在这里
+![](image/README/1645542220146.png)
 
-CustomTextEditorProvider 利用 VS Code 的标准 纯文本文档 作为数据模型
-CustomEditorProvider 则是需要插件`用自己的文档模型`
+1. 注册 TreeDataProvider 可以通过两种方式实现：
+   vscode.window.`registerTreeDataProvider`：注册树数据的 provider，需要提供视图 ID 和数据 provider 对象
+   vscode.window.`createTreeView`：通过视图 ID 和数据 provider 来创建视树视图，这会提供访问 树视图 的能力，如果你需要使用 TreeView API，可以使用 createTreeView 的方式
+2. TreeItemCollapsibleState.Collapsed（折叠）、TreeItemCollapsibleState.Expanded（展开）、TreeItemCollapsibleState.None（无子节点，不会触发 getChildren 方法）控制节点的折叠状态
+3. 更新视图内容
+   命令：
+   需要利用 onDidChangeTreeData 事件
+   注意 vscode 里的命名风格`带下划线的是 EventEmitter，不带下划线的是 Event`
+   我们可以在 package.json 中定义一条更新命令并注册
+   按钮：
 
-- 如果是纯文本文档，优先考虑 CustomTextEditor
+   ```JSON
+   "menus": {
+       "view/title": [
+           {
+               "command": "nodeDependencies.refreshEntry",
+               "when": "view == nodeDependencies ",
+               "group": "navigation"
+           },
+       ]
+   }
 
-- 其实不少自定义编辑器根本不需要编辑功能，例如实现图片预览或内存快照文件的可视化，都不需要用到编辑功能，这就是 CustomReadonlyEditorProvider 的用武之地。CustomReadonlyEditorProvider 让你可以创建一个不支持编辑的自定义编辑器，可以用来展示内容，但不支持撤销或保存等操作。和支持编辑功能的自定义编辑器相比，只读型实现起来更为简单。
+   ```
+
+   group 属性用于菜单项的排序和分类，其中值为 navigation 的 group 是用来将置顶的
+
+4. 添加到视图容器（View Container）并`将视图和视图容器绑定`
+   可以看到左侧的视图容器和树视图
+   注意 id 要一样
+   ![](image/README/1645673156137.png)
+   ![](image/README/1645673170823.png)
+5. 视图行为解读
+   view/title：位置在视图标题栏上，可以用"group": "navigation"来保证其优先级
+   view/item/context：位置在树节点上，可以用"group": "inline"让其内联显示
+   我们可以在 when 字段中使用 `TreeItem.contextValue 的数据`，来控制相应行为的显示
+   ![context名称](image/README/1645673101369.png)
+   ![context名称](image/README/1645673114408.png)
+6. 视图欢迎内容

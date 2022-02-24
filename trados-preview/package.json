@@ -1,5 +1,5 @@
 {
-  "name": "trados-preview",
+  "name": "tree-view",
   "displayName": "",
   "description": "",
   "version": "0.0.1",
@@ -10,22 +10,70 @@
     "Other"
   ],
   "activationEvents": [
-    "onCustomEditor:trados-preview"
+    "onView:tree-view"
   ],
   "main": "./dist/extension.js",
   "contributes": {
-    "customEditors": [
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "package-explorer",
+          "title": "Package Explorer",
+          "icon": "media/dep.svg"
+        }
+      ]
+    },
+    "views": {
+      "package-explorer": [
+        {
+          "id": "tree-view",
+          "icon": "media/dep.svg",
+          "name": "Package Explorer",
+          "contextualTitle": "Package Explorer"
+        }
+      ],
+      "explorer": [
+        {
+          "id": "tree-view-1",
+          "name": "Tree View",
+          "location": "sidebar",
+          "order": 1
+        }
+      ]
+    },
+    "viewsWelcome": [
       {
-        "viewType": "trados-preview",
-        "displayName": "trados",
-        "selector": [
-          {
-            "filenamePattern": "*.trados"
-          }
-        ],
-        "priority": "default"
+        "view": "tree-view",
+        "contents": "没有发现依赖内容， [了解更多](https://www.npmjs.com/).\n[添加依赖](command:tree-view.refresh)"
       }
-    ]
+    ],
+    "commands": [
+      {
+        "command": "tree-view.refresh",
+        "title": "Refresh",
+        "category": "Tree View",
+        "icon": {
+          "dark": "assets/dark/refresh.svg",
+          "light": "assets/light/refresh.svg"
+        }
+      }
+    ],
+    "menus": {
+      "view/title": [
+        {
+          "command": "tree-view.refresh",
+          "when": "view == tree-view",
+          "group": "navigation"
+        }
+      ],
+      "view/item/context": [
+        {
+          "command": "tree-view.refresh",
+          "when": "view == tree-view && viewItem == when触发",
+          "group": "inline"
+        }
+      ]
+    }
   },
   "scripts": {
     "vscode:prepublish": "npm run package",
