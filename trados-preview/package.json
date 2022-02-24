@@ -10,95 +10,18 @@
     "Other"
   ],
   "activationEvents": [
-    "onView:nodeDependencies"
+    "*"
   ],
   "main": "./dist/extension.js",
   "contributes": {
-    "viewsContainers": {
-      "activitybar": [
-        {
-          "id": "package-explorer",
-          "title": "Package Explorer",
-          "icon": "media/dep.svg"
-        }
-      ]
-    },
-    "views": {
-      "package-explorer": [
-        {
-          "id": "nodeDependencies",
-          "icon": "media/dep.svg",
-          "name": "用户可读的视图名称。将显示它",
-          "contextualTitle": "Package Explorer"
-        }
-      ],
-      "explorer": [
-        {
-          "id": "jsonOutline",
-          "name": "Json Outline",
-          "when": "jsonOutlineEnabled"
-        }
-      ]
-    },
-    "viewsWelcome": [
-      {
-        "view": "nodeDependencies",
-        "contents": "没有发现依赖内容， [了解更多](https://www.npmjs.com/).\n[添加依赖](command:tree-view.refresh)"
-      }
-    ],
-    "commands": [
-      {
-        "command": "nodeDependencies.refresh",
-        "title": "Refresh",
-        "icon": {
-          "dark": "assets/dark/refresh.svg",
-          "light": "assets/light/refresh.svg"
-        }
-      },
-      {
-        "command": "jsonOutline.refresh",
-        "title": "Refresh",
-        "icon": {
-          "light": "assets/light/refresh.svg",
-          "dark": "assets/dark/refresh.svg"
-        }
-      },
-      {
-        "command": "jsonOutline.refreshNode",
-        "title": "Refresh Node",
-        "icon": {
-          "light": "assets/light/refresh.svg",
-          "dark": "assets/dark/refresh.svg"
-        }
-      },
-      {
-        "command": "jsonOutline.renameNode",
-        "title": "Rename"
-      }
-    ],
-    "menus": {
-      "view/title": [
-        {
-          "command": "nodeDependencies.refresh",
-          "when": "view == nodeDependencies",
-          "group": "navigation"
-        }
-      ],
-      "view/item/context": [
-        {
-          "command": "nodeDependencies.refresh",
-          "when": "view == nodeDependencies && viewItem == when触发",
-          "group": "inline"
-        }
-      ]
-    },
     "configuration": [
       {
-        "title": "JSON Outline",
+        "title": "Day08-Workspace",
         "properties": {
-          "jsonOutline.autorefresh": {
-            "type": "boolean",
-            "default": false
+          "day08-workspace.inputInt": {
+            "type": "integer",
+            "default": "1",
+            "markdownDescription": "MarkdownDescription: provide a input for accepting integer, See the [VSCode Docs (https://code.visualstudio.com/api/references/contribution-points#contributes.configuration) for more details.\n - a: item1\n - b: itemb"
           }
         }
       }
