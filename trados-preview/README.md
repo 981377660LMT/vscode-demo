@@ -41,3 +41,6 @@ explorer 栏在这里
    ![context名称](image/README/1645673101369.png)
    ![context名称](image/README/1645673114408.png)
 6. 视图欢迎内容
+
+7. `为 container 容器 提供视图`(container 容器可以是自己注册的，也可以是 vscode 自带的)
+   ![](image/README/1645683084567.png)

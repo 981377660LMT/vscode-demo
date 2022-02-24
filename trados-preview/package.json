@@ -10,7 +10,7 @@
     "Other"
   ],
   "activationEvents": [
-    "onView:tree-view"
+    "onView:nodeDependencies"
   ],
   "main": "./dist/extension.js",
   "contributes": {
@@ -26,54 +26,83 @@
     "views": {
       "package-explorer": [
         {
-          "id": "tree-view",
+          "id": "nodeDependencies",
           "icon": "media/dep.svg",
-          "name": "Package Explorer",
+          "name": "用户可读的视图名称。将显示它",
           "contextualTitle": "Package Explorer"
         }
       ],
       "explorer": [
         {
-          "id": "tree-view-1",
-          "name": "Tree View",
-          "location": "sidebar",
-          "order": 1
+          "id": "jsonOutline",
+          "name": "Json Outline",
+          "when": "jsonOutlineEnabled"
         }
       ]
     },
     "viewsWelcome": [
       {
-        "view": "tree-view",
+        "view": "nodeDependencies",
         "contents": "没有发现依赖内容， [了解更多](https://www.npmjs.com/).\n[添加依赖](command:tree-view.refresh)"
       }
     ],
     "commands": [
       {
-        "command": "tree-view.refresh",
+        "command": "nodeDependencies.refresh",
         "title": "Refresh",
-        "category": "Tree View",
         "icon": {
           "dark": "assets/dark/refresh.svg",
           "light": "assets/light/refresh.svg"
         }
+      },
+      {
+        "command": "jsonOutline.refresh",
+        "title": "Refresh",
+        "icon": {
+          "light": "assets/light/refresh.svg",
+          "dark": "assets/dark/refresh.svg"
+        }
+      },
+      {
+        "command": "jsonOutline.refreshNode",
+        "title": "Refresh Node",
+        "icon": {
+          "light": "assets/light/refresh.svg",
+          "dark": "assets/dark/refresh.svg"
+        }
+      },
+      {
+        "command": "jsonOutline.renameNode",
+        "title": "Rename"
       }
     ],
     "menus": {
       "view/title": [
         {
-          "command": "tree-view.refresh",
-          "when": "view == tree-view",
+          "command": "nodeDependencies.refresh",
+          "when": "view == nodeDependencies",
           "group": "navigation"
         }
       ],
       "view/item/context": [
         {
-          "command": "tree-view.refresh",
-          "when": "view == tree-view && viewItem == when触发",
+          "command": "nodeDependencies.refresh",
+          "when": "view == nodeDependencies && viewItem == when触发",
           "group": "inline"
         }
       ]
-    }
+    },
+    "configuration": [
+      {
+        "title": "JSON Outline",
+        "properties": {
+          "jsonOutline.autorefresh": {
+            "type": "boolean",
+            "default": false
+          }
+        }
+      }
+    ]
   },
   "scripts": {
     "vscode:prepublish": "npm run package",
@@ -87,19 +116,22 @@
     "test": "node ./out/test/runTest.js"
   },
   "devDependencies": {
-    "@types/vscode": "^1.64.0",
     "@types/glob": "^7.1.3",
     "@types/mocha": "^8.2.2",
     "@types/node": "14.x",
-    "eslint": "^7.27.0",
+    "@types/vscode": "^1.64.0",
     "@typescript-eslint/eslint-plugin": "^4.26.0",
     "@typescript-eslint/parser": "^4.26.0",
+    "eslint": "^7.27.0",
     "glob": "^7.1.7",
     "mocha": "^8.4.0",
+    "ts-loader": "^9.2.2",
     "typescript": "^4.3.2",
     "vscode-test": "^1.5.2",
-    "ts-loader": "^9.2.2",
     "webpack": "^5.38.1",
     "webpack-cli": "^4.7.0"
+  },
+  "dependencies": {
+    "jsonc-parser": "^3.0.0"
   }
 }
